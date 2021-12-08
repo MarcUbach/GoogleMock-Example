@@ -21,12 +21,12 @@ public:
     }
 
 private:
-    bool IsEnabledUser(User user)
+    bool IsEnabledUser(const User& user)
     {
         return user.IsEnabled();
     }
 
-    bool IsValidPassword(User user, const std::string& password)
+    bool IsValidPassword(const User& user, const std::string& password)
     {
         std::string encodedPassword = passwordEncoder_->Encode(password);
         return encodedPassword == user.GetPasswordHash();

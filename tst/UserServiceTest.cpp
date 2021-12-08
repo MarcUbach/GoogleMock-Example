@@ -60,7 +60,7 @@ TEST_F(UserCredentialsInvalid, ShouldBeInvalidForInvalidID)
                 .Times(0);
     }
 
-    const bool isUserValid = userService->IsValidUser(invalidUserID, validPassword_);
+    bool isUserValid = userService->IsValidUser(invalidUserID, validPassword_);
     ASSERT_FALSE(isUserValid);
 }
 
@@ -77,7 +77,7 @@ TEST_F(UserCredentialsInvalid, ShouldBeInvalidForInvalidPassword)
                 .WillOnce(Return(invalidHash_));
     }
 
-    const bool isUserValid = userService->IsValidUser(ENABLED_USER->GetID(), invalidPassword_);
+    bool isUserValid = userService->IsValidUser(ENABLED_USER->GetID(), invalidPassword_);
     ASSERT_FALSE(isUserValid);
 }
 
@@ -93,7 +93,7 @@ TEST_F(UserCredentialsInvalid, ShouldBeInvalidForInvalidUser)
                 .Times(0);
     }
 
-    const bool isUserValid = userService->IsValidUser(DISABLED_USER->GetID(), validPassword_);
+    bool isUserValid = userService->IsValidUser(DISABLED_USER->GetID(), validPassword_);
     ASSERT_FALSE(isUserValid);
 }
 

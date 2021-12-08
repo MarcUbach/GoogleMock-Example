@@ -2,12 +2,13 @@
 #define USER_H
 
 #include <string>
+#include <utility>
 
 class User
 {
 public:
-    User(const std::string&  id, const std::string& passwordHash, bool enabled)
-        : id_(id), passwordHash_(passwordHash), enabled_(enabled) {}
+    User(std::string id, std::string passwordHash, bool enabled)
+        : id_(std::move(id)), passwordHash_(std::move(passwordHash)), enabled_(enabled) {}
 
     std::string GetID() const { return id_ ;}
 

@@ -1,4 +1,5 @@
-[![Build](https://github.com/MarcUbach/GoogleMock-Example/actions/workflows/build.yml/badge.svg)](https://github.com/MarcUbach/GoogleMock-Example/actions/workflows/build.yml)
+[![Linux](https://github.com/MarcUbach/GoogleMock-Example/actions/workflows/build.yml/badge.svg)](https://github.com/MarcUbach/GoogleMock-Example/actions/workflows/build.yml)
+[![Windows(Visual Studio 2019)](https://github.com/MarcUbach/GoogleMock-Example/actions/workflows/windows.yml/badge.svg)](https://github.com/MarcUbach/GoogleMock-Example/actions/workflows/windows.yml)
 [![Tests](https://github.com/MarcUbach/GoogleMock-Example/actions/workflows/tests.yml/badge.svg)](https://github.com/MarcUbach/GoogleMock-Example/actions/workflows/tests.yml)
 
 # "A Unit Testing Practitioner's Guide to Everyday Mockito" Example in C++ with GMock

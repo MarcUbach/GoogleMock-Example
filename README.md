@@ -7,7 +7,8 @@ This repository contains the example explained in toptal´s article [A Unit Test
 
 ## Dependencies
 
-Make sure you have [CMake](https://cmake.org/) >= 3.14 installed. 
+- [CMake](https://cmake.org/) >= 3.14 installed. 
+- A C++17 compatible compiler
 
 ## Building
 

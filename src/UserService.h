@@ -4,36 +4,35 @@
 #include <memory>
 #include <utility>
 
+#include "PasswordEncoder.h"
 #include "User.h"
 #include "UserRepository.h"
-#include "PasswordEncoder.h"
 
 class UserService
 {
 public:
-    UserService(std::shared_ptr<UserRepository> userRepository, std::shared_ptr<PasswordEncoder> passwordEncoder)
-        : userRepository_(std::move(userRepository)), passwordEncoder_(std::move(passwordEncoder)) {}
-
-    bool IsValidUser(const std::string& id, const std::string& password)
+    UserService(std::shared_ptr<UserRepository> p_UserRepository, std::shared_ptr<PasswordEncoder> p_PasswordEncoder)
+        : m_UserRepository(std::move(p_UserRepository)), m_PasswordEncoder(std::move(p_PasswordEncoder))
     {
-        User user = userRepository_->FindByID(id);
-        return IsEnabledUser(user) && IsValidPassword(user, password);
+    }
+
+    bool IsValidUser(const std::string& p_Id, const std::string& p_Password)
+    {
+        User user = m_UserRepository->FindByID(p_Id);
+        return IsEnabledUser(user) && IsValidPassword(user, p_Password);
     }
 
 private:
-    bool IsEnabledUser(const User& user)
+    bool IsEnabledUser(const User& p_User) { return p_User.IsEnabled(); }
+
+    bool IsValidPassword(const User& p_User, const std::string& p_Password)
     {
-        return user.IsEnabled();
+        std::string encodedPassword = m_PasswordEncoder->Encode(p_Password);
+        return encodedPassword == p_User.GetPasswordHash();
     }
 
-    bool IsValidPassword(const User& user, const std::string& password)
-    {
-        std::string encodedPassword = passwordEncoder_->Encode(password);
-        return encodedPassword == user.GetPasswordHash();
-    }
-
-    std::shared_ptr<UserRepository> userRepository_;
-    std::shared_ptr<PasswordEncoder> passwordEncoder_;
+    std::shared_ptr<UserRepository> m_UserRepository;
+    std::shared_ptr<PasswordEncoder> m_PasswordEncoder;
 };
 
-#endif /* USER_SERVICE_H */
+#endif // USER_SERVICE_H

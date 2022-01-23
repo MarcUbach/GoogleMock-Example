@@ -7,25 +7,27 @@
 class User
 {
 public:
-    User(std::string id, std::string passwordHash, bool enabled)
-        : id_(std::move(id)), passwordHash_(std::move(passwordHash)), enabled_(enabled) {}
+    User(std::string p_Id, std::string p_PasswordHash, bool p_Enabled)
+        : m_Id(std::move(p_Id)), m_PasswordHash(std::move(p_PasswordHash)), m_Enabled(p_Enabled)
+    {
+    }
 
-    std::string GetID() const { return id_ ;}
+    std::string GetID() const { return m_Id; }
 
-    void SetID(const std::string& id) { id_ = id; }
+    void SetID(const std::string& p_Id) { m_Id = p_Id; }
 
-    std::string GetPasswordHash() const { return passwordHash_ ;}
+    std::string GetPasswordHash() const { return m_PasswordHash; }
 
-    void SetPasswordHash(const std::string& passwordHash) { passwordHash_ = passwordHash; }
+    void SetPasswordHash(const std::string& p_PasswordHash) { m_PasswordHash = p_PasswordHash; }
 
-    bool IsEnabled() const { return enabled_; }
+    bool IsEnabled() const { return m_Enabled; }
 
-    void SetEnabled(bool enabled) { enabled_ = enabled; }
+    void SetEnabled(bool p_Enabled) { m_Enabled = p_Enabled; }
 
 private:
-    std::string id_;
-    std::string passwordHash_;
-    bool enabled_;
+    std::string m_Id;
+    std::string m_PasswordHash;
+    bool m_Enabled;
 };
 
-#endif /* USER_H */
+#endif // USER_H

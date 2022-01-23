@@ -9,4 +9,4 @@ public:
     MOCK_METHOD(std::string, Encode, (const std::string&), (override));
 };
 
-#endif //MOCK_PASSWORD_ENCODER_H
+#endif // MOCK_PASSWORD_ENCODER_H

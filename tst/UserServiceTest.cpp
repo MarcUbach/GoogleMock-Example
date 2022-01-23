@@ -14,21 +14,21 @@ class WhenCheckingUserCredentials : public ::testing::Test
 protected:
     void SetUp()
     {
-        userRepository = std::make_shared<MockUserRepository>();
-        passwordEncoder = std::make_shared<MockPasswordEncoder>();
-        ENABLED_USER = std::make_shared<User>(validID_, validHash_, true);
-        DISABLED_USER = std::make_shared<User>(invalidID_, invalidHash_, false);
+        m_UserRepository = std::make_shared<MockUserRepository>();
+        p_PasswordEncoder = std::make_shared<MockPasswordEncoder>();
+        ENABLED_USER = std::make_shared<User>(m_ValidID, m_ValidHash, true);
+        DISABLED_USER = std::make_shared<User>(m_InvalidID, m_InvalidHash, false);
     }
 
-    const std::string validID_ = "user_id";
-    const std::string validHash_ = "hash";
-    const std::string invalidID_ = "invalid_user_id";
-    const std::string invalidHash_ = "invalid_hash";
-    const std::string validPassword_ = "password";
-    const std::string invalidPassword_ = "invalid_password";
+    const std::string m_ValidID = "user_id";
+    const std::string m_ValidHash = "hash";
+    const std::string m_InvalidID = "invalid_user_id";
+    const std::string m_InvalidHash = "invalid_hash";
+    const std::string m_ValidPassword = "password";
+    const std::string m_InvalidPassword = "invalid_password";
 
-    std::shared_ptr<MockUserRepository> userRepository;
-    std::shared_ptr<MockPasswordEncoder> passwordEncoder;
+    std::shared_ptr<MockUserRepository> m_UserRepository;
+    std::shared_ptr<MockPasswordEncoder> p_PasswordEncoder;
     std::shared_ptr<User> ENABLED_USER;
     std::shared_ptr<User> DISABLED_USER;
 };
@@ -40,12 +40,12 @@ protected:
     {
         WhenCheckingUserCredentials::SetUp();
 
-        userService = std::make_shared<UserService>(userRepository, passwordEncoder);
+        m_UserService = std::make_shared<UserService>(m_UserRepository, p_PasswordEncoder);
     }
 
-    std::shared_ptr<UserService> userService;
+    std::shared_ptr<UserService> m_UserService;
 
-    const std::string invalidUserID = "invalid user id";
+    const std::string m_InvalidUserID = "invalid user id";
 };
 
 TEST_F(UserCredentialsInvalid, ShouldBeInvalidForInvalidID)
@@ -53,14 +53,14 @@ TEST_F(UserCredentialsInvalid, ShouldBeInvalidForInvalidID)
     {
         InSequence correctSequence;
 
-        EXPECT_CALL(*userRepository, FindByID(invalidUserID))
+        EXPECT_CALL(*m_UserRepository, FindByID(m_InvalidUserID))
                 .Times(1)
                 .WillOnce(Return(*DISABLED_USER));
-        EXPECT_CALL(*passwordEncoder, Encode(validPassword_))
+        EXPECT_CALL(*p_PasswordEncoder, Encode(m_ValidPassword))
                 .Times(0);
     }
 
-    bool isUserValid = userService->IsValidUser(invalidUserID, validPassword_);
+    bool isUserValid = m_UserService->IsValidUser(m_InvalidUserID, m_ValidPassword);
     ASSERT_FALSE(isUserValid);
 }
 
@@ -69,15 +69,15 @@ TEST_F(UserCredentialsInvalid, ShouldBeInvalidForInvalidPassword)
     {
         InSequence correctSequence;
 
-        EXPECT_CALL(*userRepository, FindByID(validID_))
+        EXPECT_CALL(*m_UserRepository, FindByID(m_ValidID))
                 .Times(1)
                 .WillOnce(Return(*ENABLED_USER));
-        EXPECT_CALL(*passwordEncoder, Encode(invalidPassword_))
+        EXPECT_CALL(*p_PasswordEncoder, Encode(m_InvalidPassword))
                 .Times(1)
-                .WillOnce(Return(invalidHash_));
+                .WillOnce(Return(m_InvalidHash));
     }
 
-    bool isUserValid = userService->IsValidUser(ENABLED_USER->GetID(), invalidPassword_);
+    bool isUserValid = m_UserService->IsValidUser(ENABLED_USER->GetID(), m_InvalidPassword);
     ASSERT_FALSE(isUserValid);
 }
 
@@ -86,14 +86,14 @@ TEST_F(UserCredentialsInvalid, ShouldBeInvalidForInvalidUser)
     {
         InSequence correctSequence;
 
-        EXPECT_CALL(*userRepository, FindByID(DISABLED_USER->GetID()))
+        EXPECT_CALL(*m_UserRepository, FindByID(DISABLED_USER->GetID()))
                 .Times(1)
                 .WillOnce(Return(*DISABLED_USER));
-        EXPECT_CALL(*passwordEncoder, Encode(validPassword_))
+        EXPECT_CALL(*p_PasswordEncoder, Encode(m_ValidPassword))
                 .Times(0);
     }
 
-    bool isUserValid = userService->IsValidUser(DISABLED_USER->GetID(), validPassword_);
+    bool isUserValid = m_UserService->IsValidUser(DISABLED_USER->GetID(), m_ValidPassword);
     ASSERT_FALSE(isUserValid);
 }
 
@@ -104,22 +104,22 @@ protected:
     {
         WhenCheckingUserCredentials::SetUp();
 
-        userService = std::make_shared<UserService>(userRepository, passwordEncoder);
+        m_UserService = std::make_shared<UserService>(m_UserRepository, p_PasswordEncoder);
     }
 
-    std::shared_ptr<UserService> userService;
+    std::shared_ptr<UserService> m_UserService;
 };
 
 TEST_F(UserCredentialsValid, ShouldBeValidForValidCredentials)
 {
-    EXPECT_CALL(*userRepository, FindByID(_))
+    EXPECT_CALL(*m_UserRepository, FindByID(_))
             .Times(1)
             .WillOnce(Return(*ENABLED_USER));
 
-    EXPECT_CALL(*passwordEncoder, Encode(validPassword_))
+    EXPECT_CALL(*p_PasswordEncoder, Encode(m_ValidPassword))
             .Times(1)
-            .WillOnce(Return(validHash_));
+            .WillOnce(Return(m_ValidHash));
 
-    bool isUserValid = userService->IsValidUser(ENABLED_USER->GetID(), validPassword_);
+    bool isUserValid = m_UserService->IsValidUser(ENABLED_USER->GetID(), m_ValidPassword);
     ASSERT_TRUE(isUserValid);
 }

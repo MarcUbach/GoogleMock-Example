@@ -9,4 +9,4 @@ public:
     MOCK_METHOD(User, FindByID, (std::string), (override));
 };
 
-#endif //MOCK_USER_REPOSITORY_H
+#endif // MOCK_USER_REPOSITORY_H

@@ -8,7 +8,7 @@ class User;
 class UserRepository
 {
 public:
-    virtual User FindByID(std::string id) = 0;
+    virtual User FindByID(std::string p_Id) = 0;
 };
 
-#endif /* USER_REPOSITORY_H */
+#endif // USER_REPOSITORY_H

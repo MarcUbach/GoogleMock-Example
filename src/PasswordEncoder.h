@@ -6,7 +6,7 @@
 class PasswordEncoder
 {
 public:
-    virtual std::string Encode(const std::string& password) = 0;
+    virtual std::string Encode(const std::string& p_Password) = 0;
 };
 
-#endif /* PASSWORD_ENCODER_H */
+#endif // PASSWORD_ENCODER_H
